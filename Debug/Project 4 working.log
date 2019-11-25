@@ -1,0 +1,4 @@
+﻿  player.cpp
+  D:\repos\cs20\cs20a-project4-depth-search\list.h(408) : warning C4715: 'List<Point>::find': not all control paths return a value
+  D:\repos\cs20\cs20a-project4-depth-search\list.h(469) : warning C4715: 'List<Point>::pop_rear': not all control paths return a value
+  Project 4 working.vcxproj -> D:\repos\cs20\cs20a-project4-depth-search\Debug\Project 4 working.exe
