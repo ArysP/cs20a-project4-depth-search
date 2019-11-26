@@ -252,7 +252,9 @@ void Player::update() {
 			m_btStack.push(curr);
 		}
 		curr.set(x, y + 1);
+		
 
+		cout << "curr before south" << curr;
 		// check south
 		curr.set(x, y + 1);
 		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
@@ -263,14 +265,19 @@ void Player::update() {
 			m_btStack.push(curr);
 		}
 		curr.set(x, y - 1);
+		cout << "curr right after check south" << curr;
+		cout << "btStack after south";
+		m_btStack.print();
+
 
 		curr = m_look.peek();
 		cout << "btstack before backtrack: ";
 		m_btStack.print();
 		cout << "curr before backtrack: " << curr << endl;
 		curr = m_btStack.peek();
-		if (getAquarium()->isCellOpen(curr) == true) {
-			cout << "i need to get into this if" << endl;
+
+		if (getAquarium()->isCellOpen(curr) == true && discovered(curr) == true) {
+			cout << "pop bstack and push stack" << endl;
 				m_look.push(m_btStack.peek());
 				m_btStack.pop();
 		}
@@ -283,7 +290,7 @@ void Player::update() {
 		m_look.print();
 		cout << endl;
 
-		cout << "btstack: ";
+		cout << "btstack after backtrack: ";
 		m_btStack.print();
 
 
