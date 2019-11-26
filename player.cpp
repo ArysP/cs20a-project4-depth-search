@@ -113,190 +113,154 @@ void Player::say() {
 //		Backtracking is challenging, save it for the very very very last thing.
 //		Make sure the STATE::LOOKING aspect compiles and works first.
 void Player::update() {
-	if (m_toggleBackTracking == false) {
-		Point curr = getTargetPoint();
-		int rows = getAquarium()->rows();
-		int cols = getAquarium()->cols();
-		int x = curr.getX();
-		int y = curr.getY();
-
-		m_look.print();
-
-		// if stack is empty - no solution
-		if (m_look.empty() == true) {
-			cout << "i should be stuck";
-			setState(State::STUCK);
-		}
-
-		//pop the top point off the stack
-		if (m_look.empty() == false) {
-			m_look.pop();
-		}
-		else {
-			return;
-		}
-		//if we are at endpoint, we are done
-		if (getAquarium()->getEndPoint() == curr) {
-			setState(State::FREEDOM);
-		}
-
-		setPosition(curr);
-
-		// check west
-		curr.set(x - 1, y);
-		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
-			m_discovered.push_front(curr);
-			m_look.push(curr);
-			curr.set(x + 1, y);
-		}
-		// check east
-		curr.set(x + 1, y);
-		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
-			m_discovered.push_front(curr);
-			m_look.push(curr);
-			curr.set(x - 1, y);
-		}
-		// check north
-		curr.set(x, y - 1);
-		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
-			m_discovered.push_front(curr);
-			m_look.push(curr);
-			curr.set(x, y + 1);
-		}
-		// check south
-		curr.set(x, y + 1);
-		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
-			m_discovered.push_front(curr);
-			m_look.push(curr);
-			curr.set(x, y - 1);
-		}
-		cout << "stack: ";
-		m_look.print();
-		cout << endl;
-		cout << "list: ";
-		m_discovered.print();
-
-		cout << "end of first: ";
+	State playerState = State::LOOKING; {
+		setState(State::LOOKING);
 	}
-	else {
-		Point curr = getTargetPoint();
+	if (m_toggleBackTracking == false) {
+	
+		setPosition(getTargetPoint());
+
+		//pop the top point off the stack
+		m_look.pop();
+
+		Point curr = getPosition();
 		int rows = getAquarium()->rows();
 		int cols = getAquarium()->cols();
 		int x = curr.getX();
 		int y = curr.getY();
 
-		cout << "stack before pop: ";
-		m_look.print();
-		cout << "curr before set: " << curr << endl;
-		
+		//if we are at endpoint, we are done
+		if (getAquarium()->getEndPoint() == curr) {
+			setState(State::FREEDOM); {
+			}
+		}
+			   
+		// check west if safe and undiscovered then discover and push current point to stack and list. 
+		//else if push point to backstack.
+		curr.set(x - 1, y);
+		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
+			m_discovered.push_front(curr);
+			m_look.push(curr);
+		}
+		curr.set(x, y);
+
+		// check east if safe and undiscovered then discover and push current point to stack and list. 
+		//else if push point to backstack.
+		curr.set(x + 1, y);
+		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
+			m_discovered.push_front(curr);
+			m_look.push(curr);
+		}
+		curr.set(x, y);
+
+		// check north if safe and undiscovered then discover and push current point to stack and list. 
+		//else if push point to backstack.
+		curr.set(x, y - 1);
+		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
+			m_discovered.push_front(curr);
+			m_look.push(curr);
+		}
+		curr.set(x, y);
+
+		// check south if safe and undiscovered then discover and push current point to stack and list. 
+		//else if push point to backstack.
+		curr.set(x, y + 1);
+		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
+			m_discovered.push_front(curr);
+			m_look.push(curr);
+		}
+		curr.set(x, y);
+
+		setPosition(curr);
+		m_btStack.push(curr);
 
 		// if stack is empty - no solution
 		if (m_look.empty() == true) {
-			cout << "i should be stuck";
 			setState(State::STUCK);
 		}
+	}
+
+	// start backtracking
+	else {
+		setPosition(getTargetPoint());
 
 		//pop the top point off the stack
-		if (m_look.empty() == false) {
-			m_look.pop();
+		m_look.pop();
+			   
+		Point curr = getPosition();
+		int rows = getAquarium()->rows();
+		int cols = getAquarium()->cols();
+		int x = curr.getX();
+		int y = curr.getY();
+
+		// check west if safe and undiscovered then discover and push current point to stack and list. 
+		//else if push point to backstack.
+		curr.set(x - 1, y);
+		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
+			m_discovered.push_front(curr);
+			m_look.push(curr);
 		}
+		curr.set(x, y);
+
+		// check east if safe and undiscovered then discover and push current point to stack and list. 
+		//else if push point to backstack.
+		curr.set(x + 1, y);
+		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
+			m_discovered.push_front(curr);
+			m_look.push(curr);
+		}
+		curr.set(x, y);
+
+		// check north if safe and undiscovered then discover and push current point to stack and list. 
+		//else if push point to backstack.
+		curr.set(x, y - 1);
+		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
+			m_discovered.push_front(curr);
+			m_look.push(curr);
+		}
+		curr.set(x, y);
+
+		// check south if safe and undiscovered then discover and push current point to stack and list. 
+		//else if push point to backstack.
+		curr.set(x, y + 1);
+		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
+			m_discovered.push_front(curr);
+			m_look.push(curr);
+		}
+		curr.set(x, y);
+
+		setPosition(curr);
+		m_btStack.push(curr);
+
+		// compare current to target
+		if ((curr.getX() == getTargetPoint().getX() && curr.getY() + 1 == getTargetPoint().getY()) |
+			(curr.getX() == getTargetPoint().getX() && curr.getY() - 1 == getTargetPoint().getY()) |
+			(curr.getX() +1 == getTargetPoint().getX() && curr.getY()  == getTargetPoint().getY()) |
+			(curr.getX() -1 == getTargetPoint().getX() && curr.getY()  == getTargetPoint().getY())) {
+
+		} 
 		else {
-			return;
+			if (curr == m_btStack.peek()) {
+				State playerState = State::BACKTRACK; {
+					setState(State::BACKTRACK);
+				}
+				if (m_btStack.empty() == false && m_look.empty() == false) {
+					m_btStack.pop();
+					m_look.push(m_btStack.peek());
+					m_btStack.pop();
+				}
+				else {
+					State playerState = State::STUCK; {
+						setState(State::STUCK);
+					}
+				}
+			}
 		}
 		//if we are at endpoint, we are done
 		if (getAquarium()->getEndPoint() == curr) {
-			setState(State::FREEDOM);
+			setState(State::FREEDOM); {
+			}
 		}
-
-
-
-		setPosition(curr);
-		cout << "curr after set: " << curr << endl;
-		if (m_btStack.empty() == true) {
-			m_btStack.push(curr);
-		}
-
-
-
-
-
-		// check west
-		curr.set(x - 1, y);
-		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
-			m_discovered.push_front(curr);
-			m_look.push(curr);
-		}
-		else if (getAquarium()->isCellOpen(curr) && discovered(curr) == true) {
-			m_btStack.push(curr);
-		}
-		curr.set(x + 1, y);
-
-		// check east
-		curr.set(x + 1, y);
-		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
-			m_discovered.push_front(curr);
-			m_look.push(curr);
-		}
-		else if (getAquarium()->isCellOpen(curr) && discovered(curr) == true) {
-			m_btQueue.push(curr);
-		}
-		curr.set(x - 1, y);
-
-		// check north
-		curr.set(x, y - 1);
-		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
-			m_discovered.push_front(curr);
-			m_look.push(curr);
-		}
-		else if (getAquarium()->isCellOpen(curr) && discovered(curr) == true) {
-			m_btStack.push(curr);
-		}
-		curr.set(x, y + 1);
-		
-
-		cout << "curr before south" << curr;
-		// check south
-		curr.set(x, y + 1);
-		if (getAquarium()->isCellOpen(curr) && discovered(curr) == false) {
-			m_discovered.push_front(curr);
-			m_look.push(curr);
-		}
-		else if (getAquarium()->isCellOpen(curr) && discovered(curr) == true) {
-			m_btStack.push(curr);
-		}
-		curr.set(x, y - 1);
-		cout << "curr right after check south" << curr;
-		cout << "btStack after south";
-		m_btStack.print();
-
-
-		curr = m_look.peek();
-		cout << "btstack before backtrack: ";
-		m_btStack.print();
-		cout << "curr before backtrack: " << curr << endl;
-		curr = m_btStack.peek();
-
-		if (getAquarium()->isCellOpen(curr) == true && discovered(curr) == true) {
-			cout << "pop bstack and push stack" << endl;
-				m_look.push(m_btStack.peek());
-				m_btStack.pop();
-		}
-		cout << "curr after backtrack: " << curr << endl;
-		//cout << endl;
-		//cout << "curr after directions: " << curr << endl;
-
-
-		cout << "stack after backtrack: ";
-		m_look.print();
-		cout << endl;
-
-		cout << "btstack after backtrack: ";
-		m_btStack.print();
-
-
-		cout << "end of first: ";
 	}
 }
 
-	//// Set by the settings file and checked here
-	//// if(m_toggleBackTracking) { ... code relating to backtracking 

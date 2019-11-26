@@ -123,7 +123,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\CS20 - Data Structures\Project3\studentinfo.h" />
     <ClInclude Include="actor.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="player.h" />
@@ -133,6 +132,7 @@
     <ClInclude Include="queue.h" />
     <ClInclude Include="shark.h" />
     <ClInclude Include="stack.h" />
+    <ClInclude Include="student.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
